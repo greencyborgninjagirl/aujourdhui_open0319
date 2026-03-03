@@ -650,6 +650,22 @@ def inject_morandi_css():
             from { opacity: 0; transform: translateY(12px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        /* 第2页：主次分明 + 开启镜像按钮莫兰迪紫 */
+        .intro-main { font-size: 0.9rem !important; line-height: 1.8 !important; color: #5A5A6A !important; margin: 1.5rem 0 !important; }
+        .disclaimer-secondary { font-size: 0.7rem !important; color: #9A9AAA !important; font-style: italic !important; margin-top: 1.5rem !important; padding-top: 1rem !important; border-top: 1px solid rgba(0,0,0,0.06) !important; }
+        .card-screen-wrap .stButton > button { background: #9B8B9E !important; border-color: #8A7B8E !important; color: #fff !important; }
+        .card-screen-wrap .stButton > button:hover { background: #8A7B8E !important; border-color: #7A6B7E !important; color: #fff !important; }
+        /* 手机端响应式 */
+        @media (max-width: 768px) {
+            .main .block-container { padding: 1.25rem 1rem !important; max-width: 100% !important; }
+            .stMarkdown h2 { font-size: 1.35rem !important; }
+            .subtitle { font-size: 0.75rem !important; letter-spacing: 0.15em !important; }
+            .intro-main { font-size: 0.85rem !important; margin: 1rem 0 !important; }
+            .disclaimer-secondary { font-size: 0.65rem !important; margin-top: 1rem !important; }
+            .mirror-output { padding: 1.25rem !important; font-size: 0.88rem !important; }
+            .tarot-card-image { max-width: 160px !important; }
+            .tarot-card-back { width: 150px !important; height: 250px !important; margin: 0.75rem auto !important; }
+        }
         </style>
         """,
         unsafe_allow_html=True,
@@ -703,6 +719,14 @@ def render_opening_screen():
             color: rgba(80,68,58,0.95) !important; background: transparent !important;
             border: none !important; outline: none !important; box-shadow: none !important;
         }
+        .opening-text-block { margin-top: 14rem; margin-left: 5rem; }
+        @media (max-width: 768px) {
+            .block-container { padding: 1rem 0.75rem !important; }
+            .opening-artwork { max-width: 100%; }
+            .opening-caption-below { font-size: 0.8rem; }
+            .opening-text-block { margin-top: 2rem; margin-left: 1rem; }
+            [data-testid="column"] { min-width: 100% !important; }
+        }
         </style>
         """,
         unsafe_allow_html=True,
@@ -729,7 +753,7 @@ def render_opening_screen():
         )
     with col_text:
         st.markdown(
-            '<div style="margin-top:14rem; margin-left:5rem;">',
+            '<div class="opening-text-block">',
             unsafe_allow_html=True,
         )
         st.markdown(
@@ -832,23 +856,43 @@ def render_ritual_screen():
             '</div>',
             unsafe_allow_html=True,
         )
-        # 牌背与按钮同一列居中，牌背在正上方、按钮在正下方；牌背可点击跳转
+        # 牌背即按钮：点击牌背直接跳转，不单独「开始抽牌」
         col_a, col_b, col_c = st.columns([1, 1, 1])
         with col_b:
-            if BACK_IMAGE_PATH.exists():
-                # 直接用 st.image 显示牌背，保证一定能显示；下方按钮居中
-                st.image(str(BACK_IMAGE_PATH), use_container_width=True)
+            back_data = _local_image_as_data_url(BACK_IMAGE_PATH) if BACK_IMAGE_PATH.exists() else None
+            if back_data:
                 st.markdown(
-                    '<style>[data-testid="column"]:nth-child(2) .stButton {{ display: flex; justify-content: center; }}</style>',
+                    f"""
+                    <style>
+                    [data-testid="column"]:nth-child(2) .stButton > button {{
+                        width: 180px; height: 300px; margin: 0 auto;
+                        display: block; background: url("{back_data}") center/cover no-repeat;
+                        border: none; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                        cursor: pointer; color: transparent; font-size: 0;
+                    }}
+                    [data-testid="column"]:nth-child(2) .stButton {{ display: flex; justify-content: center; }}
+                    @media (max-width: 768px) {{ [data-testid="column"]:nth-child(2) .stButton > button {{ width: 150px; height: 250px; }} }}
+                    </style>
+                    """,
                     unsafe_allow_html=True,
                 )
             else:
                 st.markdown(
-                    '<div style="text-align:center;"><div class="tarot-card-back" id="card-back"></div></div>',
+                    """
+                    <style>
+                    [data-testid="column"]:nth-child(2) .stButton > button {
+                        width: 180px; height: 300px; margin: 0 auto;
+                        display: block; background: linear-gradient(135deg, #D4C4D8 0%, #C8B8CC 50%, #DCD4E0 100%);
+                        border: 1px solid rgba(139,119,139,0.3); border-radius: 12px;
+                        box-shadow: 0 4px 20px rgba(0,0,0,0.08); cursor: pointer; color: transparent; font-size: 0;
+                    }
+                    [data-testid="column"]:nth-child(2) .stButton { display: flex; justify-content: center; }
+                    @media (max-width: 768px) { [data-testid="column"]:nth-child(2) .stButton > button { width: 150px; height: 250px; } }
+                    </style>
+                    """,
                     unsafe_allow_html=True,
                 )
-            st.markdown('<div style="margin-bottom: 1.5rem;"></div>', unsafe_allow_html=True)
-            if st.button("开始抽牌", key="flip_card", type="primary"):
+            if st.button("\u00A0", key="flip_card", help="点击翻开"):
                 st.session_state["ritual_phase"] = "reveal"
                 st.rerun()
     else:
@@ -925,11 +969,12 @@ def render_card_screen():
     st.markdown('<p class="subtitle">L\'image de soi</p>', unsafe_allow_html=True)
     st.caption("今日镜像 · 照见当下")
 
-    st.markdown(f"<p style='font-size:0.9rem; line-height:1.8; color:#5A5A6A; margin:1.5rem 0;'>{INTRO_BEFORE_DRAW}</p>", unsafe_allow_html=True)
+    st.markdown('<div class="card-screen-wrap">', unsafe_allow_html=True)
+    st.markdown(f'<p class="intro-main">{INTRO_BEFORE_DRAW}</p>', unsafe_allow_html=True)
     # 「此刻你在想什么」暂时隐藏，逻辑搁置
     thought = ""
 
-    if st.button("开启镜像", type="primary"):
+    if st.button("开启镜像", key="open_mirror_btn", type="primary"):
         # 抽牌与牌义：见 draw_logic.py
         def get_meaning(cn: str, base: str) -> str:
             return card_meanings.get(cn) or card_meanings.get(base) or CARD_DATA.get(base, {}).get("raw", "照见当下的自己。")
@@ -952,9 +997,10 @@ def render_card_screen():
         st.rerun()
 
     st.markdown(
-        f'<p class="disclaimer">{DISCLAIMER}</p>',
+        f'<p class="disclaimer-secondary">{DISCLAIMER}</p>',
         unsafe_allow_html=True,
     )
+    st.markdown("</div>", unsafe_allow_html=True)
 
 
 def main():
