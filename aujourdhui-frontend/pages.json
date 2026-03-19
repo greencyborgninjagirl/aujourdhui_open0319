@@ -1,0 +1,12 @@
+{
+  "pages": [
+    { "path": "pages/index/index", "style": { "navigationBarTitleText": "aujourdhui", "navigationStyle": "custom", "backgroundColor": "#8b571c" } },
+    { "path": "pages/draw/draw", "style": { "navigationBarTitleText": "今日镜像", "navigationStyle": "custom", "backgroundColor": "#e4d4a4" } },
+    { "path": "pages/result/result", "style": { "navigationBarTitleText": "今日镜像", "navigationStyle": "custom", "backgroundColor": "#FADADD" } }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarBackgroundColor": "#F5F0E5",
+    "backgroundColor": "#FADADD"
+  }
+}

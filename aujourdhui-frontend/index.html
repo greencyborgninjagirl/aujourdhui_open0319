@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>aujourd&#39;hui · 今日镜像</title>
+</head>
+<body>
+  <div id="app" style="min-height: 100vh; display: block;"></div>
+  <script>
+    var h = location.hash;
+    if (!h || h === '#') location.replace(location.pathname + location.search + '#/pages/index/index');
+  </script>
+  <script type="module" src="/main.js"></script>
+</body>
+</html>
