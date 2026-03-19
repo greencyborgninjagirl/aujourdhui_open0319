@@ -14,6 +14,7 @@
   "devDependencies": {
     "vite": "^4.0.0",
     "@dcloudio/vite-plugin-uni": "latest",
+    "@dcloudio/uni-cli-shared": "latest",
     "@dcloudio/uni-app": "latest",
     "@dcloudio/uni-app-vue": "latest",
     "@dcloudio/uni-components": "latest",
