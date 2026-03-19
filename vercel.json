@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "installCommand": "npm install --force --loglevel verbose",
+  "installCommand": "npm install --force --legacy-peer-deps",
   "buildCommand": "npm run build:h5",
   "outputDirectory": "dist/build/h5",
   "framework": "vite"
