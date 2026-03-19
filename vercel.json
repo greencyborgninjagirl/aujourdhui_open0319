@@ -1,6 +1,6 @@
 {
-  "buildCommand": "cd aujourdhui-frontend && npm run build:h5",
-  "outputDirectory": "aujourdhui-frontend/dist/build/h5",
-  "installCommand": "cd aujourdhui-frontend && npm install",
+  "installCommand": "npm install",
+  "buildCommand": "npm run build:h5",
+  "outputDirectory": "dist/build/h5",
   "framework": "vite"
 }
