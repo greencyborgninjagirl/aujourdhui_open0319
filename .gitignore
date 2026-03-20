@@ -19,3 +19,8 @@ aujourdhui-frontend/unpackage/
 
 # 可选：若仍保留本地 Streamlit 调试目录，勿提交
 .streamlit/
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
