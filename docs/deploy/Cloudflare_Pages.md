@@ -42,11 +42,16 @@ cd aujourdhui-frontend && npm ci --legacy-peer-deps && npm run build:h5
 
 ## 抽牌请求失败 **405**（Method Not Allowed）
 
-常见于 **POST 仍发到 `*.pages.dev`**：Pages 只托管静态文件，对 `/api/draw` 的 POST 往往返回 **405**。根因是生产包里 **`VITE_API_BASE` 未打进构建**（`BASE_URL` 为空时会用 `window.location.origin`，即 Cloudflare 域名）。
+常见于 **POST 打到 `*.pages.dev` 的静态层**：Pages 对未配置路由的 `/api/draw` 做 POST 往往返回 **405**。根因多为 **`VITE_API_BASE` 未打进构建**，前端仍用 `window.location.origin` 请求同域 `/api/draw`。
 
-仓库已在 `aujourdhui-frontend/vite.config.js` 里对 `import.meta.env.VITE_API_BASE` 做 **显式注入**（读取 Cloudflare 构建环境变量）。请确认：
+### 推荐：`functions/api/draw.js`（反向代理）
 
-1. Pages → **Settings** → **Environment variables** 中 **`VITE_API_BASE`** = `https://你的项目.vercel.app`（无末尾 `/`）。
-2. 保存后 **重新部署**（必须重新跑 `npm run build:h5`）。
+仓库在 **`aujourdhui-frontend/functions/api/draw.js`** 中把 **`/api/draw`** 转发到 Vercel 上的 FastAPI（默认 `https://aujourdhui-open0319.vercel.app`）。这样 **不依赖** 构建时注入 `VITE_API_BASE`，同域 `POST /api/draw` 会先进入 Pages Function，再转发到上游。
 
-自检：浏览器 **开发者工具 → Network**，抽牌时 POST 的 **Request URL** 应为 `https://xxx.vercel.app/api/draw`，而不是 `https://xxx.pages.dev/api/draw`。
+可选环境变量 **`API_ORIGIN`**（无末尾 `/`）：Pages → Settings → Environment variables，用于更换 Vercel 域名。
+
+### 备选：仅构建时注入 API
+
+`aujourdhui-frontend/vite.config.js` 会显式注入 **`VITE_API_BASE`**。若采用此方式，请在 Pages 构建变量中设置 `VITE_API_BASE` 并重新部署。
+
+自检：Network 里 POST 的 URL 为 **`*.pages.dev/api/draw`** 且 **状态 200** 即表示 Function 已生效；若仍为 **405**，确认 **`functions/` 与 `dist/build/h5` 同属 Pages 根目录**（本仓库为 `aujourdhui-frontend/`）并已重新部署。
