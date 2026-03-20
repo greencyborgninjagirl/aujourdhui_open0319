@@ -9,7 +9,6 @@ Web（H5）与微信小程序方向的每日一牌产品：法式极简视觉 + 
 ```
 aujourdhui/
 ├── README.md                 ← 本文件
-├── vercel.json               ← 前端静态托管配置（见下方 Vercel 说明）
 ├── requirements.txt          ← Python 依赖（FastAPI / 无 Streamlit）
 ├── api.py                    ← FastAPI 入口：POST /api/draw
 ├── app.py                    ← 牌库、叙事生成、Commons 牌图 URL（无 UI）
@@ -18,7 +17,7 @@ aujourdhui/
 ├── docs/                     ← 产品与运维文档（详见 docs/README.md）
 ├── run-api.command           ← 本机启动 API（127.0.0.1）
 ├── run-api-lan.command       ← 局域网启动 API（0.0.0.0）
-└── aujourdhui-frontend/      ← uni-app + Vue3 + Vite（H5 / 可发小程序）
+└── aujourdhui-frontend/      ← uni-app + Vue3 + Vite；含 vercel.json（部署见下文）
 ```
 
 ---
@@ -70,9 +69,9 @@ npm run dev:h5
 
 ## Vercel 部署要点
 
-- 根目录 **`vercel.json`** 已在子目录执行 `npm install` / `npm run build:h5`，产物目录为 **`aujourdhui-frontend/dist/build/h5`**。仍建议在 Vercel 将 **Root Directory** 设为 `aujourdhui-frontend`，与 [`docs/deploy/Vercel部署问题清单.md`](docs/deploy/Vercel部署问题清单.md) 对照排查。
+- **必须**：在 Vercel 项目 **Settings → General → Root Directory** 填 **`aujourdhui-frontend`**（与前端工程目录一致）。配置文件为 **`aujourdhui-frontend/vercel.json`**（安装/构建在子目录内执行，**不要**再写 `cd aujourdhui-frontend`）。详见 [`docs/deploy/Vercel部署问题清单.md`](docs/deploy/Vercel部署问题清单.md)。
 - 设置环境变量 **`VITE_API_BASE`** = 你的 API 根地址（公网短测可与本机 + ngrok 配合）。
-- **Node**：建议 **20.x LTS**（Vercel → Project → Settings → Node.js Version）。本地可用更高版本，但需与 `engines`（`>=20`）兼容。
+- **Node**：`package.json` 的 `engines.node` 为 **`20.x`**，与 Vercel 的 Node 20 LTS 一致；勿使用根目录 `vercel.json` + 子目录 Root 混用（会导致 `cd aujourdhui-frontend` 找不到路径）。
 
 ---
 

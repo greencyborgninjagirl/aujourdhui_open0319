@@ -1,6 +1,6 @@
 # Vercel 部署问题清单
 
-基于当前项目结构整理。仓库根目录的 **`vercel.json` 已默认**使用 `cd aujourdhui-frontend && …` 安装与构建，并把产物目录指向 `aujourdhui-frontend/dist/build/h5`，**即使未在 Vercel 控制台设置 Root Directory 也可构建**（仍建议在控制台将 Root Directory 设为 `aujourdhui-frontend`，以便框架检测与日志更清晰）。
+基于当前项目结构整理。**当前约定**：`vercel.json` 放在 **`aujourdhui-frontend/vercel.json`**，安装/构建命令里**不要**再写 `cd aujourdhui-frontend`。在 Vercel 控制台将 **Root Directory** 设为 **`aujourdhui-frontend`** 后，工作目录已是该文件夹，若再 `cd aujourdhui-frontend` 会报 **`No such file or directory`**。
 
 ---
 
@@ -20,15 +20,13 @@
 - 原因：`uni` 来自 `node_modules/.bin/`，只有执行 `npm install` 后才会存在
 
 ### 根因
-- **项目根目录**（`aujourd'hui/`）下**没有** `package.json`
-- `package.json` 在 `aujourdhui-frontend/` 里
-- 当前 `vercel.json` 的 `installCommand` 和 `buildCommand` 在**根目录**执行
-- 根目录执行 `npm install` 会找不到 `package.json` 或安装到错误位置
-- 根目录执行 `npm run build:h5` 会失败（没有该脚本），且 `uni` 不在 PATH 中
+- **项目根目录**（仓库根）下**没有** `package.json`，`package.json` 在 `aujourdhui-frontend/` 里。
+- 若 Vercel **未**设置 Root Directory：在根目录执行安装会失败；若 **已**把 Root Directory 设为 `aujourdhui-frontend`，又在 `installCommand` 里写 **`cd aujourdhui-frontend`**，会报 **`No such file or directory`**（当前目录已经是子目录，不应再 `cd`）。
+- 根目录执行 `npm run build:h5` 会失败（没有该脚本），且 `uni` 不在 PATH 中。
 
-### 解决方向（二选一，仓库内已做 2）
-1. **在 Vercel 控制台**：Settings → General → **Root Directory** 设为 `aujourdhui-frontend`
-2. **在 vercel.json**：所有命令加 `cd aujourdhui-frontend &&`，并把 `outputDirectory` 改为 `aujourdhui-frontend/dist/build/h5`（**根目录 `vercel.json` 已按此编写**）
+### 解决方向（二选一，不要混用）
+1. **推荐（当前仓库）**：Vercel **Root Directory** = `aujourdhui-frontend`，使用 **`aujourdhui-frontend/vercel.json`**（无 `cd`）。
+2. **备选**：Root Directory 留空（仓库根），则在根目录 `vercel.json` 里写 `cd aujourdhui-frontend && …`，`outputDirectory` 为 `aujourdhui-frontend/dist/build/h5`。**不要**同时「Root = 子目录」又在命令里 `cd` 子目录。
 
 ---
 
@@ -113,19 +111,18 @@
 
 ```
 aujourdhui/                    ← 项目根（无 package.json）
-├── vercel.json                 ← 当前命令在此目录执行（建议配合 Vercel Root Directory）
 ├── api.py
 ├── app.py
 ├── draw_logic.py
 ├── docs/                       ← 文档与牌义知识库
-│   ├── product/                ← 产品宪章、交互原则
+│   ├── product/
 │   ├── content/                ← logic_mapping_2.md（后端读取）
 │   ├── deploy/                 ← 本文件、部署指南
-│   └── internal/               ← 内测说明
-└── aujourdhui-frontend/        ← 前端代码
-    ├── package.json            ← 含 build:h5 脚本
+│   └── internal/
+└── aujourdhui-frontend/        ← 前端代码（Vercel Root Directory 指向这里）
+    ├── vercel.json             ← 安装/构建/产物目录（无 cd）
+    ├── package.json
     ├── vite.config.js
-    ├── node_modules/           ← npm install 应在此生成
-    ├── dist/build/h5/          ← 构建输出（或 unpackage/dist/build/h5）
+    ├── dist/build/h5/          ← 构建输出
     └── ...
 ```

@@ -48,7 +48,7 @@
 
 ### Step 3：部署前端
 
-1. 确认 `vercel.json` 在仓库根目录（已包含正确配置）
+1. 确认 Vercel **Root Directory** 为 `aujourdhui-frontend`，且该目录下有 `vercel.json`（或仅用控制台默认构建）
 2. 点击 **Deploy**
 3. 部署完成后得到链接，如：`https://aujourdhui-xxx.vercel.app`
 
