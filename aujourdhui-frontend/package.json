@@ -19,7 +19,7 @@
     "vue": "3.4.21"
   },
   "devDependencies": {
-    "@dcloudio/types": "^3.4.14",
+    "@dcloudio/types": "3.4.28",
     "@dcloudio/vite-plugin-uni": "3.0.0-alpha-5000420260319001",
     "sass": "^1.80.0",
     "unplugin-auto-import": "19.1.0",
