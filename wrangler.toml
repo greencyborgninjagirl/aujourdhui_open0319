@@ -1,0 +1,6 @@
+# Cloudflare Pages：产物目录相对于「仓库根目录」。
+# 请在 Pages 项目里把「构建的根目录」设为仓库根 /（不要设为 aujourdhui-frontend），
+# 构建命令示例：cd aujourdhui-frontend && npm ci --legacy-peer-deps && npm run build:h5
+name = "aujourdhui-web"
+compatibility_date = "2024-01-01"
+pages_build_output_dir = "aujourdhui-frontend/dist/build/h5"
