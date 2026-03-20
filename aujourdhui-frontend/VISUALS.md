@@ -1,6 +1,6 @@
 # aujourd'hui 前端视觉规范（当前技术栈）
 
-在 **HBuilderX + Uni-app Vue3** 下可直接运行，无额外依赖。遵循项目根目录 `aujourdhui_product_constitution_1.1.txt` 与 `.cursorrules`：极简、留白；色板与文字色**按画作主色**驱动（当前开屏示例：金棕渐变 + 对应文案色），后续将按画作提供模板。
+在 **HBuilderX + Uni-app Vue3** 下可直接运行，无额外依赖。视觉与文案原则见仓库 [`docs/product/aujourdhui_product_constitution_1.1.txt`](../docs/product/aujourdhui_product_constitution_1.1.txt)：极简、留白；色板与文字色**按画作主色**驱动（当前开屏示例：金棕渐变 + 对应文案色），后续将按画作提供模板。
 
 ---
 

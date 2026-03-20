@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "installCommand": "npm install --force --legacy-peer-deps",
-  "buildCommand": "npm run build:h5",
-  "outputDirectory": "dist/build/h5",
-  "framework": "vite"
+  "installCommand": "cd aujourdhui-frontend && npm install --legacy-peer-deps",
+  "buildCommand": "cd aujourdhui-frontend && npm run build:h5",
+  "outputDirectory": "aujourdhui-frontend/dist/build/h5",
+  "framework": null
 }

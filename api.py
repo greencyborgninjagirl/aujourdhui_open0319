@@ -9,7 +9,7 @@ from pathlib import Path
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-# 从 app 抽离纯逻辑（app 为历史 Streamlit 版，已弃用；主端为 Uni-app + 本 API）
+# 从 app 引用牌库、叙事与配图逻辑（主端为 Uni-app H5/小程序 + 本 API）
 from app import (
     CARD_DATA,
     MAJOR_ARCANA_IMAGES,

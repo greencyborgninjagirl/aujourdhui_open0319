@@ -1,6 +1,8 @@
 # aujourdhui · 今日镜像 — 前端
 
-**重要**：请用 HBuilderX **只打开本文件夹 `aujourdhui-frontend`**（不要打开上级 `aujourd'hui`），再「运行 → 运行到浏览器」，否则会白屏。详见本目录下 `CHECKLIST.md`。
+**仓库总览**（后端、文档索引、Vercel）：上一级目录 [`README.md`](../README.md) · [`docs/README.md`](../docs/README.md)。
+
+**重要**：请用 HBuilderX **只打开本文件夹 `aujourdhui-frontend`**（不要打开仓库根目录），再「运行 → 运行到浏览器」，否则会白屏。详见本目录下 `CHECKLIST.md`。
 
 项目标识为 **aujourdhui**（避免编程中单引号冲突），页面上仍显示为 aujourd'hui。**主端为 Uni-app（HBuilderX 开发）**；Streamlit 版已弃用，流程与文案遵循产品宪章。
 
