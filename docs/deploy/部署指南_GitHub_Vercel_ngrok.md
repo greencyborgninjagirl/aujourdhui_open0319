@@ -62,7 +62,7 @@
 
 2. **启动 API**：
    ```bash
-   uvicorn api:app --host 127.0.0.1 --port 8000
+   uvicorn backend_api:app --host 127.0.0.1 --port 8000
    ```
    或双击 `run-api.command`
 
@@ -106,7 +106,7 @@
 ## 五、常见问题
 
 **Q：抽牌失败 / 请求超时？**  
-- 确认本机 API 已启动（`uvicorn api:app --host 127.0.0.1 --port 8000`）
+- 确认本机 API 已启动（`uvicorn backend_api:app --host 127.0.0.1 --port 8000`）
 - 确认 ngrok 隧道已启动且未断开
 - 确认 Vercel 的 `VITE_API_BASE` 与当前 ngrok 地址一致
 

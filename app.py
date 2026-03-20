@@ -1,5 +1,5 @@
 # aujourd'hui — 今日镜像
-# 核心数据与叙事逻辑，供 FastAPI（api.py）引用。Streamlit 前端已彻底移除。
+# 核心数据与叙事逻辑，供 FastAPI（backend_api.py）引用。Streamlit 前端已彻底移除。
 
 import hashlib
 import random

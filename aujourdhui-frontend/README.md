@@ -14,7 +14,7 @@
 
 ## 本地联调
 
-1. 后端：在项目**上一级**目录启动 `uvicorn api:app --reload`（即 aujourdhui 项目根目录）
+1. 后端：在项目**上一级**目录启动 `uvicorn backend_api:app --reload`（即 aujourdhui 项目根目录）
 2. 前端：在 `config.js` 中 `BASE_URL` 已设为 `http://127.0.0.1:8000`，开发期间保持本机；上线/真机测试时再改 IP
 3. 用 HBuilderX 打开本目录，运行到浏览器（H5）：开屏点进入 → 抽牌页点「开启镜像」→ 解读页查看结果
 

@@ -1,6 +1,6 @@
 # Vercel 部署问题清单
 
-基于当前项目结构整理。**当前约定**：`vercel.json` 放在 **`aujourdhui-frontend/vercel.json`**，安装/构建命令里**不要**再写 `cd aujourdhui-frontend`。在 Vercel 控制台将 **Root Directory** 设为 **`aujourdhui-frontend`** 后，工作目录已是该文件夹，若再 `cd aujourdhui-frontend` 会报 **`No such file or directory`**。
+基于当前项目结构整理。**当前约定（全栈）**：`vercel.json` 在 **仓库根目录**；**Root Directory 留空**（不要用仅前端的子目录）。根目录配置会安装 Python 依赖、构建 `aujourdhui-frontend`，并由 **`api/draw.py`** 提供 **`POST /api/draw`**。若仍使用「仅前端子目录」旧配置，勿与根目录 `cd aujourdhui-frontend` 混用。
 
 ---
 
@@ -24,9 +24,10 @@
 - 若 Vercel **未**设置 Root Directory：在根目录执行安装会失败；若 **已**把 Root Directory 设为 `aujourdhui-frontend`，又在 `installCommand` 里写 **`cd aujourdhui-frontend`**，会报 **`No such file or directory`**（当前目录已经是子目录，不应再 `cd`）。
 - 根目录执行 `npm run build:h5` 会失败（没有该脚本），且 `uni` 不在 PATH 中。
 
-### 解决方向（二选一，不要混用）
-1. **推荐（当前仓库）**：Vercel **Root Directory** = `aujourdhui-frontend`，使用 **`aujourdhui-frontend/vercel.json`**（无 `cd`）。
-2. **备选**：Root Directory 留空（仓库根），则在根目录 `vercel.json` 里写 `cd aujourdhui-frontend && …`，`outputDirectory` 为 `aujourdhui-frontend/dist/build/h5`。**不要**同时「Root = 子目录」又在命令里 `cd` 子目录。
+### 解决方向（当前仓库：全栈）
+1. **Root Directory**：**留空**（仓库根）。
+2. **`vercel.json`**：在根目录，含 `pip install -r requirements.txt`、`cd aujourdhui-frontend && npm run build:h5`、`outputDirectory` 指向 `aujourdhui-frontend/dist/build/h5`。
+3. **Python Serverless**：`api/draw.py` 导出与 `backend_api.py` 相同的 FastAPI `app`（ASGI）。
 
 ---
 
@@ -110,19 +111,15 @@
 ## 八、项目结构速览
 
 ```
-aujourdhui/                    ← 项目根（无 package.json）
-├── api.py
+aujourdhui/                    ← 项目根（Vercel Root Directory 留空）
+├── vercel.json                 ← 根目录：pip + 前端 build + outputDirectory
+├── backend_api.py              ← FastAPI（本地 uvicorn）
+├── api/
+│   └── draw.py                 ← Vercel Python Serverless（ASGI，POST /api/draw）
 ├── app.py
 ├── draw_logic.py
-├── docs/                       ← 文档与牌义知识库
-│   ├── product/
-│   ├── content/                ← logic_mapping_2.md（后端读取）
-│   ├── deploy/                 ← 本文件、部署指南
-│   └── internal/
-└── aujourdhui-frontend/        ← 前端代码（Vercel Root Directory 指向这里）
-    ├── vercel.json             ← 安装/构建/产物目录（无 cd）
+├── docs/
+└── aujourdhui-frontend/      ← uni-app 前端
     ├── package.json
-    ├── vite.config.js
-    ├── dist/build/h5/          ← 构建输出
-    └── ...
+    └── dist/build/h5/          ← 构建输出
 ```

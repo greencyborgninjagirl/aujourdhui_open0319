@@ -1,7 +1,7 @@
-# aujourdhui — 今日镜像 · 后端 API
-# 供 Uni-app/Taro 等前端调用：POST /api/draw 返回抽牌结果 + 叙事 + 名画
+# aujourd'hui — 今日镜像 · 后端 API
+# 供 Uni-app / Vercel Serverless 调用：POST /api/draw
 #
-# 本地运行：uvicorn api:app --reload
+# 本地运行：uvicorn backend_api:app --reload
 # 接口文档：http://127.0.0.1:8000/docs
 
 from pathlib import Path
@@ -9,7 +9,6 @@ from pathlib import Path
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-# 从 app 引用牌库、叙事与配图逻辑（主端为 Uni-app H5/小程序 + 本 API）
 from app import (
     CARD_DATA,
     MAJOR_ARCANA_IMAGES,
@@ -56,7 +55,6 @@ def draw():
     narrative, artwork = generate_narrative(card_name, base_meaning, card_keywords)
     card_image_url = get_tarot_image_url(card_name)
 
-    # 去除 AI/Markdown 格式残留（宪章：前端不得展示 ** 等痕迹）
     def strip_markdown(s: str) -> str:
         return (s or "").replace("**", "")
 
@@ -65,7 +63,6 @@ def draw():
     if artwork.get("reason"):
         artwork["reason"] = strip_markdown(artwork["reason"])
 
-    # artwork 中 year 可能为 int（artwork_minor），统一成 str 便于 JSON
     aw = artwork
     if "year" in aw and aw["year"] is not None:
         aw["year"] = str(aw["year"])

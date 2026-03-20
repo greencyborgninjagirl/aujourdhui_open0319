@@ -10,7 +10,8 @@ Web（H5）与微信小程序方向的每日一牌产品：法式极简视觉 + 
 aujourdhui/
 ├── README.md                 ← 本文件
 ├── requirements.txt          ← Python 依赖（FastAPI / 无 Streamlit）
-├── api.py                    ← FastAPI 入口：POST /api/draw
+├── backend_api.py            ← FastAPI 应用（本地 uvicorn / 供 api/ 引用）
+├── api/draw.py               ← Vercel Python Serverless 入口（ASGI）
 ├── app.py                    ← 牌库、叙事生成、Commons 牌图 URL（无 UI）
 ├── draw_logic.py             ← 抽牌池、名画匹配
 ├── artwork_minor.py          ← 小阿卡纳名画数据
@@ -31,7 +32,7 @@ cd /path/to/aujourdhui
 python3 -m venv .venv
 source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-uvicorn api:app --reload --host 127.0.0.1 --port 8000
+uvicorn backend_api:app --reload --host 127.0.0.1 --port 8000
 ```
 
 - 接口文档：<http://127.0.0.1:8000/docs>
@@ -67,11 +68,13 @@ npm run dev:h5
 
 ---
 
-## Vercel 部署要点
+## Vercel 部署要点（前端静态 + Python Serverless 同项目）
 
-- **必须**：在 Vercel 项目 **Settings → General → Root Directory** 填 **`aujourdhui-frontend`**（与前端工程目录一致）。配置文件为 **`aujourdhui-frontend/vercel.json`**（安装/构建在子目录内执行，**不要**再写 `cd aujourdhui-frontend`）。详见 [`docs/deploy/Vercel部署问题清单.md`](docs/deploy/Vercel部署问题清单.md)。
-- 设置环境变量 **`VITE_API_BASE`** = 你的 API 根地址（公网短测可与本机 + ngrok 配合）。
-- **Node**：`package.json` 的 `engines.node` 为 **`20.x`**，与 Vercel 的 Node 20 LTS 一致；勿使用根目录 `vercel.json` + 子目录 Root 混用（会导致 `cd aujourdhui-frontend` 找不到路径）。
+- **Root Directory**：留空，使用 **Git 仓库根目录**（与 `vercel.json`、`api/`、`aujourdhui-frontend/` 同级）。**不要**再填 `aujourdhui-frontend`（旧配置仅前端时用过）。
+- 根目录 **`vercel.json`** 会：`pip install -r requirements.txt` → 构建 H5 → 输出 `aujourdhui-frontend/dist/build/h5`；**`api/draw.py`** 提供 **`POST /api/draw`**（FastAPI ASGI，与本地 `backend_api.py` 同源）。
+- **前端请求地址**：生产构建默认 **`VITE_API_BASE` 未设置时走相对路径**（与页面同域，见 `aujourdhui-frontend/config.js`）。若仍要连外置后端（ngrok 等），再在 Vercel 设置 **`VITE_API_BASE`**。
+- **Node**：`aujourdhui-frontend/package.json` 中 `engines.node` 为 **`20.x`**。
+- **注意**：Serverless 有冷启动与执行时长限制；名画请求若较慢，偶发超时需再调（或后续换常驻后端）。详见 [`docs/deploy/Vercel部署问题清单.md`](docs/deploy/Vercel部署问题清单.md)。
 
 ---
 

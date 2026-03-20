@@ -36,5 +36,5 @@
 
 ## 四、仓库根目录与前端关系
 
-- 仓库根目录是**后端 + 文档**：`api.py`、`app.py`、`draw_logic.py`、`docs/`（产品宪章、牌义库、部署说明）等，与前端是否白屏无直接关系。
+- 仓库根目录是**后端 + 文档**：`backend_api.py`、`api/draw.py`（Vercel）、`app.py`、`draw_logic.py`、`docs/` 等，与前端是否白屏无直接关系。
 - 前端是**独立工程**，日常运行与编译在 `aujourdhui-frontend` 内完成；HBuilderX 只需打开并运行该文件夹。总览见仓库根目录 [`README.md`](../README.md)。
