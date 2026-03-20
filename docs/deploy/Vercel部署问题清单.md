@@ -6,6 +6,16 @@
 
 ## 〇、依赖与构建脚本（Node / uni-app 版本）
 
+### Python：externally-managed-environment（PEP 668）
+
+Vercel 构建机上的 Python 由 **uv** 管理，直接 `pip install` 可能报错。根目录 **`vercel.json`** 的 `installCommand` 已使用：
+
+`python -m pip install -r requirements.txt --break-system-packages`
+
+仅在**构建容器**内使用，不影响你本机 Python。
+
+### Uni-app / Node
+
 - **旧版 `@dcloudio/*`（如 2024-07 的 `3.0.0-40203…`）**：与当前 Vercel 常用 Node、Vite 5.4 等组合易出现 peer 冲突或解析失败；已对齐到 npm 上较新的 **`3.0.0-alpha-5000420260319001`** 系列，并将 **Vite 固定为 `5.2.8`**（与官方 `vite-plugin-uni` peer 一致）。
 - **构建命令**：应使用 **`uni build`**（由 `@dcloudio/vite-plugin-uni` 提供 `uni` 命令），而不是裸跑 `vite build`；否则易缺少 `UNI_PLATFORM` / 输入目录等环境。
 - **无 `src/` 目录的旧结构**：官方 CLI 默认 `UNI_INPUT_DIR=src`。本项目页面在根目录，脚本中已设置 **`UNI_INPUT_DIR=.`**。
