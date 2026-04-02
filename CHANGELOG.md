@@ -1,28 +1,48 @@
-# Changelog
+# 更新日志
 
-本项目变更记录，便于追溯 Beta 与后续版本。格式参考 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，版本号语义见 [`docs/VERSIONING.md`](docs/VERSIONING.md)。
-
----
-
-## [Beta 1.0] — 2026-04-02
-
-**Git 标签：** `v1.0.0-beta.1`
-
-首个在 GitHub 以「Beta 1.0」名义归档的版本；线上形态、部署与关键文件见 [`docs/STATUS_1.0_BETA.md`](docs/STATUS_1.0_BETA.md)。
-
-### 说明
-
-- 自本条目起建立 **CHANGELOG** 与 **分支管理约定**（见 `docs/VERSIONING.md`）。
-- 后续 **修 bug、新功能、大改** 均在本文件按版本追加小节；合并进 `main` 时同步更新。
+本仓库记录 **aujourdhui（今日镜像）** 的版本变更。当前存档基线版本号为 **[1.0-beta]**，亦称 **Beta 1.0**。
 
 ---
 
-<!-- 新版本在此上方追加，例如：
+## 版本与分支约定
+
+- **语义化标签**：`主版本.次版本.修订`；预发布可加 `-beta`、`-rc` 等（示例：`1.0.0-beta`、`1.1.0`）。
+- **主分支 `main`**：始终保持**可部署、可归档**的稳定线；与 GitHub 存档、线上环境对应关系以发布说明为准。
+- **新功能 / 较大改动**：在**独立分支**（如 `feature/功能简述`、`fix/问题简述`）开发，**自测或联测通过后再合并入 `main`**。
+- **修小 bug**：可用短生命周期分支或直接按团队习惯在 `main` 上修复；若涉及风险，仍建议分支 + PR 审查后再合并。
+- **记录义务**：合并入 `main` 并准备对外或对内发布时，**在本文件追加一条版本小节**，说明变更类型（新增 / 修复 / 变更 / 移除）与要点；重大架构调整单独成条。
+
+---
+
+## [1.0-beta] — 2026-04-02
+
+**说明**：首个对外内测可用的 Beta 基线；本小节用于 GitHub 存档与后续对比，**不**在此罗列每一行代码。
+
+### 新增
+
+- **H5 前端**：uni-app（Vue3）每日一牌流程（开屏 → 抽牌 → 解读），极简视觉与 `--aj-*` 主题变量体系。
+- **后端 API**：FastAPI `POST /api/draw`（牌义与叙事逻辑见 Python 与 `docs/content/`）。
+- **部署**：Vercel 托管 Python Serverless（`api/draw.py`）；Cloudflare Pages 托管静态 H5；Pages Functions 将同域 `/api/draw` 代理至 Vercel，避免静态层对 POST 返回 405。
+- **文档**：产品宪章、牌义库、部署说明、**[1.0 正式 Beta] 状态快照**（见 `docs/STATUS_1.0_BETA.md`）等。
+
+### 备注
+
+- 本地开发：`uvicorn backend_api:app` + `aujourdhui-frontend` 下 `npm run dev:h5`。
+- 牌面图等资源说明见根目录 `README.md`。
+
+---
+
+<!-- 后续版本在此上方追加新小节，建议从新到旧排序。示例：
 
 ## [1.0.0] — YYYY-MM-DD
 
 ### 新增
-### 变更
+- …
+
 ### 修复
+- …
+
+### 变更
+- …
 
 -->
