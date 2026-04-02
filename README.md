@@ -65,6 +65,8 @@ npm run dev:h5
 | Vercel + ngrok 公网短测 | [`docs/deploy/部署指南_GitHub_Vercel_ngrok.md`](docs/deploy/部署指南_GitHub_Vercel_ngrok.md) |
 | Vercel 构建报错排查 | [`docs/deploy/Vercel部署问题清单.md`](docs/deploy/Vercel部署问题清单.md) |
 | 完整文档索引 | [`docs/README.md`](docs/README.md) |
+| 变更记录 | 根目录 [`CHANGELOG.md`](CHANGELOG.md) |
+| 分支与版本约定 | [`docs/VERSIONING.md`](docs/VERSIONING.md) |
 
 ---
 
